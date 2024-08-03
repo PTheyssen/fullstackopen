@@ -15,14 +15,22 @@ const Feedback = ({ onClickGood, onClickNeutral, onClickBad }) =>
   </>
 )
 
-const Statistic = ({ goodClicks, neutralClicks, badClicks }) => (
-  <>
-    <h1>Statistics</h1>
-    <p>good {goodClicks}</p>
-    <p>neutral {neutralClicks}</p>
-    <p>bad {badClicks}</p>
-  </>
-)
+const Statistic = ({ goodClicks, neutralClicks, badClicks }) => {
+  const totalClicks = goodClicks + neutralClicks + badClicks;
+  const average = (goodClicks - badClicks) / totalClicks
+  const postivePercentage = goodClicks / totalClicks * 100
+  return (
+    <>
+      <h1>Statistics</h1>
+      <p>good {goodClicks}</p>
+      <p>neutral {neutralClicks}</p>
+      <p>bad {badClicks}</p>
+      <p>all {totalClicks}</p>
+      <p>average {isNaN(average) ? 'not available with no votes' : average}</p>
+      <p>positive {isNaN(postivePercentage) ? 'not available with no votes' : postivePercentage + '%'}</p>
+    </>
+  )
+}
 
 const App = () => {
   // save clicks of each button to its own state
