@@ -15,8 +15,11 @@ const Feedback = ({ onClickGood, onClickNeutral, onClickBad }) =>
   </>
 )
 
-const StatisticsLine = ({text, value}) => (
-  <p>{text} {value}</p>
+const StatisticsLine = ({ text, value }) => (
+  <tr>
+    <td>{text}</td>
+    <td>{value}</td>
+  </tr>
 )
 
 const Statistic = ({ goodClicks, neutralClicks, badClicks }) => {
@@ -34,12 +37,16 @@ const Statistic = ({ goodClicks, neutralClicks, badClicks }) => {
     return (
       <>
         <h1>Statistics</h1>
-        <StatisticsLine text={'good'} value={goodClicks} />
-        <StatisticsLine text={'neutral'} value={neutralClicks} />
-        <StatisticsLine text={'bad'} value={badClicks} />
-        <StatisticsLine text={'all'} value={totalClicks} />
-        <StatisticsLine text={'average'} value={isNaN(average) ? 'not available with no votes' : average} />
-        <StatisticsLine text={'positive'} value={isNaN(postivePercentage) ? 'not available with no votes' : postivePercentage + '%'} />
+        <table>
+          <tbody>
+            <StatisticsLine text={'good'} value={goodClicks} />
+            <StatisticsLine text={'neutral'} value={neutralClicks} />
+            <StatisticsLine text={'bad'} value={badClicks} />
+            <StatisticsLine text={'all'} value={totalClicks} />
+            <StatisticsLine text={'average'} value={isNaN(average) ? 'not available with no votes' : average} />
+            <StatisticsLine text={'positive'} value={isNaN(postivePercentage) ? 'not available with no votes' : postivePercentage + '%'} />
+          </tbody>
+        </table>
       </>
     )
   }
