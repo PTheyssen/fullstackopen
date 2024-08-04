@@ -15,21 +15,34 @@ const Feedback = ({ onClickGood, onClickNeutral, onClickBad }) =>
   </>
 )
 
+const StatisticsLine = ({text, value}) => (
+  <p>{text} {value}</p>
+)
+
 const Statistic = ({ goodClicks, neutralClicks, badClicks }) => {
   const totalClicks = goodClicks + neutralClicks + badClicks;
-  const average = (goodClicks - badClicks) / totalClicks
-  const postivePercentage = goodClicks / totalClicks * 100
-  return (
-    <>
-      <h1>Statistics</h1>
-      <p>good {goodClicks}</p>
-      <p>neutral {neutralClicks}</p>
-      <p>bad {badClicks}</p>
-      <p>all {totalClicks}</p>
-      <p>average {isNaN(average) ? 'not available with no votes' : average}</p>
-      <p>positive {isNaN(postivePercentage) ? 'not available with no votes' : postivePercentage + '%'}</p>
-    </>
-  )
+  if (totalClicks === 0) {
+    return (
+      <>
+        <h1>Statistics</h1>
+        <p>no feedback given</p>
+      </>
+    )
+  } else {
+    const average = (goodClicks - badClicks) / totalClicks
+    const postivePercentage = goodClicks / totalClicks * 100
+    return (
+      <>
+        <h1>Statistics</h1>
+        <StatisticsLine text={'good'} value={goodClicks} />
+        <StatisticsLine text={'neutral'} value={neutralClicks} />
+        <StatisticsLine text={'bad'} value={badClicks} />
+        <StatisticsLine text={'all'} value={totalClicks} />
+        <StatisticsLine text={'average'} value={isNaN(average) ? 'not available with no votes' : average} />
+        <StatisticsLine text={'positive'} value={isNaN(postivePercentage) ? 'not available with no votes' : postivePercentage + '%'} />
+      </>
+    )
+  }
 }
 
 const App = () => {
