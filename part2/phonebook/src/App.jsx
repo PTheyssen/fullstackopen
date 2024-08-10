@@ -1,13 +1,8 @@
 import { useState } from 'react'
+import PersonForm from './components/PersonForm'
+import PersonFilter from './components/PersonFilter'
+import Persons from './components/Persons'
 
-function applyFilter(filterString, persons) {
-  if (filterString === '') {
-    return persons
-  }
-  return persons.filter((p) =>
-    p.name.toLowerCase().includes(filterString) ||
-    p.name.includes(filterString))
-}
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -32,7 +27,7 @@ const App = () => {
     setNewNumber(event.target.value)
   }
 
-  const addNewEntry = (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault()
     if (persons.map(p => p.name).includes(newName)) {
       alert(`${newName} is already added to phonebook`)
@@ -47,38 +42,20 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>filter by name:
-        <input
-          value={filterString}
-          onChange={handleFilterChange}
-        />
-      </div>
-      <h2>add a new entry</h2>
-      <form onSubmit={addNewEntry}>
-        <div>
-          name:
-          <input
-            value={newName}
-            onChange={handleNameChange}
-          />
-        </div>
-        <div>
-          number:
-          <input
-            value={newNumber}
-            onChange={handleNumberChange}
-          />
-        </div>
-        <div>
-          <button type="submit" >
-            add
-          </button>
-        </div>
-      </form>
+      <PersonFilter
+        filterString={filterString}
+        handleFilterChange={handleFilterChange}
+      />
+      <h3>add a new entry</h3>
+      <PersonForm
+        handleSubmit={handleSubmit}
+        newName={newName}
+        handleNameChange={handleNameChange}
+        newNumber={newNumber}
+        handleNumberChange={handleNumberChange}
+      />
       <h2>Numbers</h2>
-      {applyFilter(filterString, persons).map((p) =>
-        <div key={p.name}>{p.name} {p.number}</div>
-      )}
+      <Persons persons={persons} filterString={filterString} />
     </div>
   )
 }
