@@ -2,20 +2,20 @@ import { useState, useEffect } from 'react'
 import PersonForm from './components/PersonForm'
 import PersonFilter from './components/PersonFilter'
 import Persons from './components/Persons'
-import axios from 'axios'
+import personService from './services/persons'
 
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const getPersonsHook = () => {
-    console.log("Retrieve persons")
-    axios
-      .get('http://localhost:3001/persons')
-      .then((response) => {
-        console.log("received ", response.data.length, " persons")
-        setPersons(response.data)
+    personService.getPersons()
+      .then(p => {
+        console.log("received ", p.length, " persons")
+        setPersons(p)
       })
   }
+
+
   useEffect(getPersonsHook, [])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
@@ -33,16 +33,30 @@ const App = () => {
     setNewNumber(event.target.value)
   }
 
+  const handleDelete = (person) => {
+    window.confirm(`Are you sure you want to delete ${person.name}?`)
+    personService.deleteEntry(person.id)
+      .then(p => {
+        console.log(`Deleted: entry ${p.name}`)
+      })
+    setPersons(persons.filter(p => p.id != person.id))
+  }
+
+
   const handleSubmit = (event) => {
     event.preventDefault()
     if (persons.map(p => p.name).includes(newName)) {
       alert(`${newName} is already added to phonebook`)
       return
     }
-    setPersons(persons.concat({ name: newName, number: newNumber }))
-    // reset form
-    setNewName('')
-    setNewNumber('')
+
+    personService
+      .createEntry({ name: newName, number: newNumber })
+      .then(returnedEntry => {
+        setPersons(persons.concat(returnedEntry))
+        setNewName('')
+        setNewNumber('')
+      })
   }
 
   return (
@@ -61,7 +75,7 @@ const App = () => {
         handleNumberChange={handleNumberChange}
       />
       <h2>Numbers</h2>
-      <Persons persons={persons} filterString={filterString} />
+      <Persons persons={persons} filterString={filterString} handleDelete={handleDelete} />
     </div>
   )
 }
