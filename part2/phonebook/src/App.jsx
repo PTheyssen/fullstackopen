@@ -34,30 +34,40 @@ const App = () => {
   }
 
   const handleDelete = (person) => {
-    window.confirm(`Are you sure you want to delete ${person.name}?`)
-    personService.deleteEntry(person.id)
-      .then(p => {
-        console.log(`Deleted: entry ${p.name}`)
-      })
-    setPersons(persons.filter(p => p.id != person.id))
+    if (window.confirm(`Are you sure you want to delete ${person.name}?`)) {
+      personService.deleteEntry(person.id)
+        .then(p => {
+          console.log(`Deleted: entry ${p.name}`)
+        })
+      setPersons(persons.filter(p => p.id != person.id))
+    }
   }
 
 
   const handleSubmit = (event) => {
     event.preventDefault()
     if (persons.map(p => p.name).includes(newName)) {
-      alert(`${newName} is already added to phonebook`)
-      return
+      if (window.confirm(`${newName} already has an entry, do you want to update the number?`)) {
+        const oldEntry = persons.find(p => p.name === newName)
+        const newEntry = { ...oldEntry, number: newNumber }
+        personService.updateEntry(newEntry)
+          .then(returnedEntry => {
+            setPersons(persons.map(p => p.id === newEntry.id ? newEntry : p))
+            setNewName('')
+            setNewNumber('')
+          })
+      }
+    } else {
+      personService
+        .createEntry({ name: newName, number: newNumber })
+        .then(returnedEntry => {
+          setPersons(persons.concat(returnedEntry))
+          setNewName('')
+          setNewNumber('')
+        })
     }
-
-    personService
-      .createEntry({ name: newName, number: newNumber })
-      .then(returnedEntry => {
-        setPersons(persons.concat(returnedEntry))
-        setNewName('')
-        setNewNumber('')
-      })
   }
+
 
   return (
     <div>
