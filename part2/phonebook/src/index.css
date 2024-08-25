@@ -1,8 +1,21 @@
-.notification {
+.success {
     color: green;
     background-color: lavender;
-    border-style: none;
+    border-style: solid;
     border-radius: 5px;
+    border-color: green;
     padding: 10px;
-    margin-bottom: 10px;    
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.error {
+    color: red;
+    background-color: lavender;
+    border-style: solid;
+    border-radius: 5px;
+    border-color: red;
+    padding: 10px;
+    margin-bottom: 10px;
+    font-size: 16px;
 }

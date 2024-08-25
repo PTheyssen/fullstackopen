@@ -42,6 +42,10 @@ const App = () => {
         .then(p => {
           console.log(`Deleted: entry ${p.name}`)
         })
+        .catch(error => {
+          setNotification({ message: `Information about ${person.name} has already been removed from the server`, isError: true })
+          setTimeout(() => setNotification(null), 5000)
+        })
       setPersons(persons.filter(p => p.id != person.id))
     }
   }
@@ -56,8 +60,8 @@ const App = () => {
         personService.updateEntry(newEntry)
           .then(returnedEntry => {
             setPersons(persons.map(p => p.id === newEntry.id ? newEntry : p))
-            setNotification(`Updated number for ${newName} with ${newNumber}`)
-            setTimeout(() => setNotification(null), 5000)            
+            setNotification({ message: `Updated number for ${newName} to: ${newNumber}`, isError: false })
+            setTimeout(() => setNotification(null), 5000)
             setNewName('')
             setNewNumber('')
           })
@@ -67,7 +71,7 @@ const App = () => {
         .createEntry({ name: newName, number: newNumber })
         .then(returnedEntry => {
           setPersons(persons.concat(returnedEntry))
-          setNotification(`Created new entry for ${newName}`)
+          setNotification({ message: `Created new entry for ${newName}`, isError: false })
           setTimeout(() => setNotification(null), 5000)
           setNewName('')
           setNewNumber('')
@@ -79,7 +83,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notfication message={notification} />
+      <Notfication notfication={notification} />
       <PersonFilter
         filterString={filterString}
         handleFilterChange={handleFilterChange}
