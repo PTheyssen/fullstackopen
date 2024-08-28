@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import Countries from './components/Countries'
+import Country from './components/Country'
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
         <input value={searchTerm} onChange={handleSearchTermChange} />
       </div>
       <Countries names={filteredNames} />
+      <Country countryNames={filteredNames}/>
     </>
   )
 }
