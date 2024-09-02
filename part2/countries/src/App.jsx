@@ -5,11 +5,10 @@ import Country from './components/Country'
 
 
 function App() {
+  const [displayedCountry, setDisplayedCountry] = useState(null)
   const [countryNames, setCountryNames] = useState([])
+  const [filteredNames, setFilteredNames] = useState([])
   const [searchTerm, setSearchTerm] = useState("")
-  const filteredNames = countryNames.filter(n =>
-    n.toLowerCase().includes(searchTerm.toLowerCase())
-  )
 
   useEffect(() => {
     axios.get('https://studies.cs.helsinki.fi/restcountries/api/all')
@@ -21,6 +20,20 @@ function App() {
 
   const handleSearchTermChange = (event) => {
     setSearchTerm(event.target.value)
+    const newFilteredNames =
+      countryNames.filter(n =>
+        n.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    setFilteredNames(newFilteredNames)
+    if (newFilteredNames.length === 1) {
+      setDisplayedCountry(newFilteredNames[0])
+    }
+  }
+
+  const handleShowCountry = (event) => {
+    // TODO: handle click on show button for country
+    //       set it as the country to be displayed
+    return
   }
 
   return (
@@ -31,7 +44,7 @@ function App() {
         <input value={searchTerm} onChange={handleSearchTermChange} />
       </div>
       <Countries names={filteredNames} />
-      <Country countryNames={filteredNames}/>
+      <Country countryName={displayedCountry} />
     </>
   )
 }
