@@ -1,4 +1,4 @@
-const Countries = ({ names }) => {
+const Countries = ({ names, handleShowCountry }) => {
   if (names.length > 20) {
     return (
       <>
@@ -11,7 +11,10 @@ const Countries = ({ names }) => {
     <>
       {
         names.map(n =>
-          <div key={n}> {n}</div>
+          <div key={n}>
+            {n} &nbsp;
+            <button onClick={() => handleShowCountry(n)}>show</button>
+          </div>
         )
       }
     </>

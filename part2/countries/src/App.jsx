@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import Countries from './components/Countries'
-import Country from './components/Country'
+import CountryDetails from './components/CountryDetails'
 
 
 function App() {
@@ -30,10 +30,8 @@ function App() {
     }
   }
 
-  const handleShowCountry = (event) => {
-    // TODO: handle click on show button for country
-    //       set it as the country to be displayed
-    return
+  const handleShowCountry = (countryName) => {
+    setDisplayedCountry(countryName)
   }
 
   return (
@@ -43,8 +41,8 @@ function App() {
         Filter countries: &nbsp;
         <input value={searchTerm} onChange={handleSearchTermChange} />
       </div>
-      <Countries names={filteredNames} />
-      <Country countryName={displayedCountry} />
+      <Countries names={filteredNames} handleShowCountry={handleShowCountry} />
+      <CountryDetails countryName={displayedCountry} />
     </>
   )
 }

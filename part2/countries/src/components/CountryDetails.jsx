@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import axios from "axios"
 import Weather from "./Weather"
 
-const Country = ({ countryName }) => {
+const CountryDetails = ({ countryName }) => {
   const [country, SetCountry] = useState(null)
   console.log(countryName)
 
@@ -47,4 +47,4 @@ const Country = ({ countryName }) => {
   }
 }
 
-export default Country
+export default CountryDetails
